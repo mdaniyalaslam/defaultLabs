@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import Creatingtodo from './Creatingtodo';
 import Addingtodos from './Addingtodos';
+import Div3 from './Div3';
+import Div4 from './Div4';
 import firebase from "firebase"
 import registerServiceWorker from './registerServiceWorker';
 
@@ -20,6 +22,8 @@ ReactDOM.render(
   <div>
   <Creatingtodo />
   <Addingtodos />
+  <Div3/>
+  <Div4/>
   </div>
   
   , document.getElementById('root'));

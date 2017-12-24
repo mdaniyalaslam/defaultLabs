@@ -3,6 +3,7 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import logo from './logo.svg';
 import './App.css';
 import './Creatingtodo.css';
+import firebase from 'firebase';
 
 class Addingtodos extends Component {
   constructor(props) {
@@ -30,7 +31,10 @@ class Addingtodos extends Component {
       todos: currentList,
       todoInput: ''
     })
-    console.log(this.state.todos)
+    // let todos = this.state.todos
+    let todoInput = this.state.todoInput
+    firebase.database().ref('/').child('reacttodos').push(todoInput)
+    console.log(todoInput)
   }
 
   render() {

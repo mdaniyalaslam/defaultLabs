@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import './Creatingtodo.css';
 
 
 class Div3 extends Component {
@@ -37,16 +38,11 @@ class Div3 extends Component {
   
   
           <div className="App">
-          {/* Header starts */}
-            <header className="App-header">
-              <img src={logo} className="App-logo" alt="logo" />
-              <h1 className="App-title">React Todo</h1>
-            </header>
-          {/* Header ends */}
+    
   
             <div className="col-sm-3 back ">
             {/* Todo input area Starts */}
-            <h1>Creating Todos</h1>
+            <h1>Div-3</h1>
               <input type="text"
                 className="form-control field"
                 placeholder="Write Todo"

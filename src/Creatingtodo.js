@@ -3,6 +3,8 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import logo from './logo.svg';
 import './App.css';
 import './Creatingtodo.css';
+import firebase from 'firebase';
+
 
 class Creatingtodo extends Component {
   constructor(props) {
@@ -30,13 +32,15 @@ class Creatingtodo extends Component {
       todos: currentList,
       todoInput: ''
     })
-    console.log(this.state.todos)
+    let todos = this.state.todoInput
+    firebase.database().ref('/').child('reacttodos').push(todos)
+    console.log(todos)
   }
 
   render() {
     return (
 
-
+      // <div className ="row"></div>
         <div className="App">
         {/* Header starts */}
           <header className="App-header">
@@ -57,7 +61,7 @@ class Creatingtodo extends Component {
             <button type="button" className="btn btn-primary" onClick={this.btnHandler}>Add</button>
             <ul>
               {this.state.todos.map((val, ind) => {
-                return <li key={ind}>{val} {}</li>
+                return <li key={ind}> {val} {<button>Button</button>} </li>
               })}
             </ul>
           {/* Todo input area Ends */}
