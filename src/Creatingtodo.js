@@ -4,6 +4,8 @@ import logo from './logo.svg';
 import './App.css';
 import './Creatingtodo.css';
 import firebase from 'firebase';
+import { Draggable, Droppable } from 'react-drag-and-drop'
+
 
 
 class Creatingtodo extends Component {
@@ -17,12 +19,14 @@ class Creatingtodo extends Component {
     this.todoHandler = this.todoHandler.bind(this)
     this.btnHandler = this.btnHandler.bind(this)
 
-    firebase.database().ref('/').child("reacttodos").on('child_added', (snap) => {
-      var obj = snap.val();
+    firebase.database().ref('/').child("reacttodos").child('todos').on('child_added', (snap) => {
+      var obj = {val:snap.val()};
+      // obj[snap.key] = snap.val();
       obj.id = snap.key;
       this.state.todos.push(obj)
       this.setState({ todos: this.state.todos });
       // console.log(this.state.todos)
+      console.log(obj);
     })
   }
 
@@ -40,9 +44,9 @@ class Creatingtodo extends Component {
 
   btnHandler(ev) {
     let todo = this.state.todoInput
-    firebase.database().ref('/').child('reacttodos').push(todo)
+    firebase.database().ref('/').child('reacttodos').child('todos').push(todo)
     // console.log(todo)
-    this.setState({todoInput:''})
+    this.setState({ todoInput: '' })
   }
 
   render() {
@@ -69,9 +73,9 @@ class Creatingtodo extends Component {
           <button type="button" className="btn btn-primary" onClick={this.btnHandler}>Add</button>
           <ul>
             {this.state.todos.map((val, ind) => {
-              return <li key={ind}>
-                   {val.todo}{<button>Remove</button>}
-                </li>
+              return <li key={val.key}>
+                {val.val} 
+              </li>
             })}
           </ul>
           {/* Todo input area Ends */}

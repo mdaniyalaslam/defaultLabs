@@ -5,6 +5,7 @@ import Creatingtodo from './Creatingtodo';
 import Addingtodos from './Addingtodos';
 import Div3 from './Div3';
 import Div4 from './Div4';
+import Dragndrop from './Dragndrop';
 import firebase from "firebase"
 import registerServiceWorker from './registerServiceWorker';
 
@@ -20,11 +21,12 @@ firebase.initializeApp(config);
 
 ReactDOM.render(
   <div>
-  <Creatingtodo />
-  <Addingtodos />
-  <Div3/>
-  <Div4/>
+    {/* <Creatingtodo /> */}
+    {/* <Addingtodos /> */}
+    {/* <Div3 /> */}
+    {/* <Div4 /> */}
+    <Dragndrop />
   </div>
-  
+
   , document.getElementById('root'));
 registerServiceWorker();
