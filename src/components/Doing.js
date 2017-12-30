@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import logo from './logo.svg';
-import './App.css';
+import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './Creatingtodo.css';
 import firebase from 'firebase';
+import { Draggable, Droppable } from 'react-drag-and-drop'
 
-class Addingtodos extends Component {
+
+class Doing extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -66,4 +66,4 @@ class Addingtodos extends Component {
 }
 
 
-export default Addingtodos;
+export default Doing;
