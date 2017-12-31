@@ -1,69 +1,82 @@
 import React, { Component } from 'react';
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import './App.css';
+import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './Creatingtodo.css';
+import firebase from 'firebase';
+import { Draggable, Droppable } from 'react-drag-and-drop'
 
 
 
-class Div4 extends Component {
-    constructor(props) {
-      super(props)
-      this.state = {
-        todoInput: '',
-        todos: []
-  
-      }
-      this.todoHandler = this.todoHandler.bind(this)
-      this.btnHandler = this.btnHandler.bind(this)
+
+class Done extends Component {
+
+
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      todoInput: '',
+      todos: [],
+      donetodos: []
+
     }
-  
-    todoHandler(ev) {
-      this.setState({
-        todoInput: ev.target.value
-      })
-      // console.log(this.state.todos)
-    }
-  
-    btnHandler(ev) {
-      let currentList = this.state.todos;
-      currentList.push(this.state.todoInput);
-      this.setState({
-        todos: currentList,
-        todoInput: ''
-      })
-      console.log(this.state.todos)
-    }
-  
-    render() {
-      return (
-  
-  
-          <div className="App">
-
-  
-            <div className="col-sm-3 back ">
-            {/* Todo input area Starts */}
-            <h1>Div-4</h1>
-              <input type="text"
-                className="form-control field"
-                placeholder="Write Todo"
-                name="todo" value={this.state.todoInput}
-                onChange={this.todoHandler}
-                />
-              <button type="button" className="btn btn-primary" onClick={this.btnHandler}>Add</button>
-              <ul>
-                {this.state.todos.map((val, ind) => {
-                  return <li key={ind}>{val} {}</li>
-                })}
-              </ul>
-            {/* Todo input area Ends */}
-            </div>
 
 
-          </div>
-      );
-    }
+    firebase.database().ref('/').child("reacttodos").child('donetodos').on('child_added', (snap) => {
+      var obj = { value: snap.val() };
+      obj.key = snap.key;
+      this.state.donetodos.push(obj)
+      this.setState({ donetodos: this.state.donetodos });
+    })
+
   }
-  
-  
-  export default Div4;
+
+
+
+  onDroped(data) {
+    var obj = JSON.parse(data.val);
+    firebase.database().ref('/').child("reacttodos").child('donetodos').push(obj.value);
+    firebase.database().ref('/').child("reacttodos").child('todos').child(obj.key).remove()
+
+    let currentTodos = this.state.todos;
+    currentTodos = []
+
+    firebase.database().ref('/').child("reacttodos").child('todos').on('child_added', (snap) => {
+        var obj = { value: snap.val() };
+        obj.key = snap.key;
+        currentTodos.push(obj)
+        this.setState({ todos: currentTodos });
+        // console.log(obj)
+    })
+
+}
+  render() {
+    return (
+
+
+      <div className="App back">
+
+
+        <Droppable types={['val']} onDrop={this.onDroped.bind(this)}>
+          <ul className="Smoothie">
+            <h1>Done</h1>
+
+            {this.state.donetodos.map((val, ind) => {
+              return (
+                <Draggable type="val" data={JSON.stringify(val)}>
+                  <li key={val.key}>
+                    {val.value}
+                  </li>
+                </Draggable>
+              )
+            })}
+          </ul>
+        </Droppable>
+
+
+      </div>
+    );
+  }
+}
+
+
+export default Done;

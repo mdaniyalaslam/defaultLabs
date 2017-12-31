@@ -31,6 +31,9 @@ class Creatingtodo extends Component {
         this.state.donetodos.push(obj)
         this.setState({ donetodos: this.state.donetodos });
     })
+
+    this.todoHandler = this.todoHandler.bind(this)
+    this.btnHandler = this.btnHandler.bind(this)
 }
 
 

@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 // import Dragndrop from './components/Dragndrop'
 import Creatingtodo from './components/Creatingtodo'
-import Doing from './components/Doing'
+import Done from './components/Done'
 
 class App extends Component {
   render() {
@@ -24,7 +24,7 @@ class App extends Component {
           </div>
 
           <div className='col-sm-3'>
-            <Doing />
+            <Done />
           </div>
 
           <div className='col-sm-3'>

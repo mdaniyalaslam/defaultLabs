@@ -83,7 +83,7 @@ class Dragndrop extends Component {
                 </Droppable>
 
                 <Droppable types={['val']} onDrop={this.onDroped.bind(this)}>
-                    <ul className="Smoothie bg-danger">
+                    <ul className="Smoothie">
                         <h1>Done</h1>
 
                         {this.state.donetodos.map((val, ind) => {
