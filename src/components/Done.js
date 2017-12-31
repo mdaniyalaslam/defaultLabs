@@ -49,6 +49,20 @@ class Done extends Component {
     })
 
 }
+
+deleteHandler(val, ind){
+
+  firebase.database().ref('/').child("reacttodos").child('donetodos').child(val.key).remove();
+  let currentTodos = this.state.donetodos;
+      currentTodos = []
+
+  firebase.database().ref('/').child("reacttodos").child('donetodos').on('child_added', (snap) => {
+    var obj = { value: snap.val() };
+    obj.key = snap.key;
+    currentTodos.push(obj)
+    this.setState({ donetodos: currentTodos });
+})}
+
   render() {
     return (
 
@@ -64,7 +78,7 @@ class Done extends Component {
               return (
                 <Draggable type="val" data={JSON.stringify(val)}>
                   <li key={val.key}>
-                    {val.value}
+                    {val.value}<button onClick={this.deleteHandler.bind(this, val, ind)}>Delete</button>
                   </li>
                 </Draggable>
               )

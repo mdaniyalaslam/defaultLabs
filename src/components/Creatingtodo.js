@@ -7,86 +7,116 @@ import { Draggable, Droppable } from 'react-drag-and-drop'
 
 
 
+
+
+
 class Creatingtodo extends Component {
- 
+
+  
+  // componentDidMount(){
+
+  //   let currentTodos = this.state.todos
+  //   currentTodos = []
+
+  //   firebase.database().ref('/').child("reacttodos").child('todos').on('child_added', (snap) => {
+  //     var obj = { value: snap.val() };
+  //     obj.key = snap.key;
+  //     currentTodos.push(obj)
+  //     this.setState({ todos: this.state.currentTodos });
+  //     // console.log(obj)
+  //   })
+  
+  //   console.log("did mount " )
+  //   // let currentTodos = this.state.todos;
+  //   // currentTodos.push(obj)
+
+
+  // }
+  
   constructor(props) {
+    console.log("constructor")
     super(props)
     this.state = {
-        todoInput: '',
-        todos: [],
-        donetodos: []
-
+      todoInput: '',
+      todos: [],
+      donetodos: []
+      
     }
-
+    
     firebase.database().ref('/').child("reacttodos").child('todos').on('child_added', (snap) => {
-        var obj = { value: snap.val() };
-        obj.key = snap.key;
-        this.state.todos.push(obj)
-        this.setState({ todos: this.state.todos });
-        // console.log(obj)
+      var obj = { value: snap.val() };
+      obj.key = snap.key;
+      this.state.todos.push(obj)
+      this.setState({ todos: this.state.todos });
+      // console.log(obj)
     })
     firebase.database().ref('/').child("reacttodos").child('donetodos').on('child_added', (snap) => {
-        var obj = { value: snap.val() };
-        obj.key = snap.key;
-        this.state.donetodos.push(obj)
-        this.setState({ donetodos: this.state.donetodos });
+      var obj = { value: snap.val() };
+      obj.key = snap.key;
+      this.state.donetodos.push(obj)
+      this.setState({ donetodos: this.state.donetodos });
     })
-
+    
     this.todoHandler = this.todoHandler.bind(this)
     this.btnHandler = this.btnHandler.bind(this)
-}
-
-
-
+  }
+  
+  
+  
   todoHandler(ev) {
     this.setState({
       todoInput: ev.target.value
     })
   }
-
+  
   btnHandler(ev) {
     let todo = this.state.todoInput
     firebase.database().ref('/').child('reacttodos').child('todos').push(todo)
     this.setState({ todoInput: '' })
   }
-
+  
   deleteHandler(val, ind){
-
+    
     firebase.database().ref('/').child("reacttodos").child('todos').child(val.key).remove();
     let currentTodos = this.state.todos;
-        currentTodos = []
-
+    currentTodos = []
+    
     firebase.database().ref('/').child("reacttodos").child('todos').on('child_added', (snap) => {
       var obj = { value: snap.val() };
       obj.key = snap.key;
       currentTodos.push(obj)
       this.setState({ todos: currentTodos });
-  })
+    })
     
     
-
-
+    
+    
   }
   onUnDrop(data) {
     var obj = JSON.parse(data.val);
     firebase.database().ref('/').child("reacttodos").child('todos').push(obj.value);
     firebase.database().ref('/').child("reacttodos").child('donetodos').child(obj.key).remove();
-
+    
     let currentDoneTodos = this.state.donetodos;
     currentDoneTodos = [];
-
+    
     firebase.database().ref('/').child("reacttodos").child('donetodos').on('child_added', (snap) => {
-        var obj = { value: snap.val() };
-        obj.key = snap.key;
-        currentDoneTodos.push(obj)
-        this.setState({ donetodos: currentDoneTodos });
+      var obj = { value: snap.val() };
+      obj.key = snap.key;
+      currentDoneTodos.push(obj)
+      this.setState({ donetodos: currentDoneTodos });
     })
+    
+  }
 
-}
-
+  // drag(){
+  //   console.log('done')
+  // }
+  
   render() {
+    console.log("render")
     return (
-
+      
       <div className="App">
         <div className=" back ">
           {/* Todo input area Starts */}
@@ -106,7 +136,7 @@ class Creatingtodo extends Component {
                     <ul className="smoothie">
                         {this.state.todos.map((val, ind) => {
                             return (
-                                <Draggable type="val" data={JSON.stringify(val)}>
+                                <Draggable type="val" data={JSON.stringify(val)} >
                                     <li id={val.key}>
                                         {val.value} <button onClick={this.deleteHandler.bind(this, val, ind)}>Delete</button>
                                     </li>
