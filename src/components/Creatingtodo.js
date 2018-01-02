@@ -62,9 +62,6 @@ class Creatingtodo extends Component {
       currentTodos.push(obj)
       this.setState({ todos: currentTodos });
   })
-    
-    
-
 
   }
   onUnDrop(data) {

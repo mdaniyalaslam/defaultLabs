@@ -30,25 +30,43 @@ class Done extends Component {
 
   }
 
+  deleteHandler(val, ind) {
 
+   var firebase = firebase.database().ref('/').child("reacttodos").child('donetodos').child(val.key).remove();
+    let currentTodos = this.state.donetodos;
+    currentTodos = []
+
+    firebase.database().ref('/').child("reacttodos").child('donetodos').on('child_added', (snap) => {
+      var obj = { value: snap.val() };
+      obj.key = snap.key;
+      currentTodos.push(obj)
+      this.setState({ donetodos: currentTodos });
+    })
+  }
 
   onDroped(data) {
     var obj = JSON.parse(data.val);
     firebase.database().ref('/').child("reacttodos").child('donetodos').push(obj.value);
     firebase.database().ref('/').child("reacttodos").child('todos').child(obj.key).remove()
 
-    let currentTodos = this.state.todos;
+    let currentTodos = this.state.donetodos;
     currentTodos = []
 
-    firebase.database().ref('/').child("reacttodos").child('todos').on('child_added', (snap) => {
-        var obj = { value: snap.val() };
-        obj.key = snap.key;
-        currentTodos.push(obj)
-        this.setState({ todos: currentTodos });
-        // console.log(obj)
+    firebase.database().ref('/').child("reacttodos").child('donetodos').on('child_added', (snap) => {
+      var obj = { value: snap.val() };
+      obj.key = snap.key;
+      currentTodos.push(obj)
+      this.setState({ donetodos: currentTodos });
+      // console.log(obj)
     })
+  }
+  liDrag(e){
+    console.log('done') 
+    
+ 
+   }
+  
 
-}
   render() {
     return (
 
@@ -62,9 +80,9 @@ class Done extends Component {
 
             {this.state.donetodos.map((val, ind) => {
               return (
-                <Draggable type="val" data={JSON.stringify(val)}>
-                  <li key={val.key}>
-                    {val.value}
+                <Draggable onDrag={this.liDrag.bind(this)} type="val" data={JSON.stringify(val)}>
+                  <li  key={val.key}> 
+                    {val.value} <button onClick={this.deleteHandler.bind(this, val, ind)}>Delete</button>
                   </li>
                 </Draggable>
               )
